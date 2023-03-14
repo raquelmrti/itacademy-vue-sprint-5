@@ -1,12 +1,19 @@
 "use strict";
 const API_URL = "https://icanhazdadjoke.com/";
-const jokeBtn = document.querySelector("#joke-btn");
-jokeBtn === null || jokeBtn === void 0 ? void 0 : jokeBtn.addEventListener("click", () => {
+const jokePara = document.querySelector(".joke-para");
+const jokeBtn = document.querySelector(".joke-btn");
+jokeBtn.addEventListener("click", () => {
     fetch(API_URL, {
         headers: {
             Accept: "application/json",
         },
     })
         .then((response) => response.json())
-        .then((json) => console.log(json.joke));
+        .then((json) => {
+        jokePara.textContent = json.joke;
+        changeBtnText(jokeBtn, "Següent acudit");
+    });
 });
+function changeBtnText(btn, newText) {
+    btn.value = newText;
+}
