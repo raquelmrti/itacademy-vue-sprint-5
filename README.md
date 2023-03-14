@@ -21,3 +21,9 @@ We will be using the [icanhazdadjoke API](https://icanhazdadjoke.com/api).
 Make a button that fetches a joke from the API every time it's clicked on, and show the joke through the console.
 
 ##### ✅ Finished: 14/03/2023
+
+**— Exercise 2**
+
+Print the joke on screen instead of showing it through the console, and make a basic layout for the page.
+
+##### ✅ Finished: 14/03/2023
