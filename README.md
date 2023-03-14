@@ -13,3 +13,11 @@ This sprint focuses on TypeScript and, more importantly, APIs. The project brief
 We will be using the [icanhazdadjoke API](https://icanhazdadjoke.com/api).
 
 ---
+
+### ⭐ **Level 1** ⭐
+
+**— Exercise 1**
+
+Make a button that fetches a joke from the API every time it's clicked on, and show the joke through the console.
+
+##### ✅ Finished: 14/03/2023
