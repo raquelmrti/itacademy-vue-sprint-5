@@ -27,3 +27,9 @@ Make a button that fetches a joke from the API every time it's clicked on, and s
 Print the joke on screen instead of showing it through the console, and make a basic layout for the page.
 
 ##### ✅ Finished: 14/03/2023
+
+**— Exercise 3**
+
+Implement a voting system that lets the user rate the jokes displayed with a score from 1 to 3. Each time a vote is taken, an object containing the joke being rated, the given score and the date gets pushed to an array.
+
+##### ✅ Finished: 15/03/2023

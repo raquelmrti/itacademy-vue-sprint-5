@@ -16,3 +16,18 @@ body {
   text-align: center;
   background-color: #fff;
 }
+
+.joke-voting {
+  display: none;
+  margin-bottom: 1em;
+
+  button {
+    border: none;
+    background-color: transparent;
+    font-size: 2em;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
