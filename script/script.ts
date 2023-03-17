@@ -1,4 +1,6 @@
-const API_URL = "https://icanhazdadjoke.com/";
+/* --------------------------- DAD JOKES -------------------------- */
+
+const dadJokesApiUrl = "https://icanhazdadjoke.com/";
 const jokePara = document.querySelector(".joke-para") as HTMLElement;
 const jokeBtn = document.querySelector(".joke-btn") as HTMLInputElement;
 const jokeVoting = document.querySelector(".joke-voting") as HTMLElement;
@@ -6,8 +8,12 @@ const jokeVoting = document.querySelector(".joke-voting") as HTMLElement;
 const changeBtnText = (btn: HTMLElement, newText: string) =>
   (btn.textContent = newText);
 
+const makeElementVisible = (elem: HTMLElement) => {
+  if (!elem.style.display) elem.style.display = "block";
+}
+
 jokeBtn.addEventListener("click", () => {
-  fetch(API_URL, {
+  fetch(dadJokesApiUrl, {
     headers: {
       Accept: "application/json",
     },
@@ -16,9 +22,8 @@ jokeBtn.addEventListener("click", () => {
     .then((json) => {
       jokePara.textContent = json.joke;
       changeBtnText(jokeBtn, "Següent acudit");
-    });
-
-    if (!jokeVoting.style.display) jokeVoting.style.display = "block";
+      makeElementVisible(jokeVoting);
+    })
 });
 
 interface Report {
@@ -58,3 +63,24 @@ jokeVoting.addEventListener("click", (e) => {
     voteJoke(score);
   }
 });
+
+/* ---------------------------- WEATHER --------------------------- */
+
+const weatherApi = {
+  url: "http://api.openweathermap.org/data/2.5/weather",
+  city: "barcelona",
+  lang: "ca",
+  units: "metric",
+  appid: "cb3f4d75936f8a5b15dd34bd2b306614"
+}
+
+fetch(`${weatherApi.url}?q=${weatherApi.city}&lang=${weatherApi.lang}&units=${weatherApi.units}&appid=${weatherApi.appid}`)
+  .then((response) => response.json())
+  .then((json) => {
+    const weatherTempDiv = document.querySelector(".weather-temp") as HTMLElement;
+    const weatherIconImg = document.querySelector(".weather-icon-img") as HTMLImageElement;
+
+    weatherIconImg.src = `http://openweathermap.org/img/wn/${json.weather[0].icon}.png`;
+    weatherTempDiv.textContent = `${parseInt(json.main.temp)} ºC`;
+  })
+

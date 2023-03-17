@@ -1,11 +1,16 @@
 "use strict";
-const API_URL = "https://icanhazdadjoke.com/";
+/* --------------------------- DAD JOKES -------------------------- */
+const dadJokesApiUrl = "https://icanhazdadjoke.com/";
 const jokePara = document.querySelector(".joke-para");
 const jokeBtn = document.querySelector(".joke-btn");
 const jokeVoting = document.querySelector(".joke-voting");
 const changeBtnText = (btn, newText) => (btn.textContent = newText);
+const makeElementVisible = (elem) => {
+    if (!elem.style.display)
+        elem.style.display = "block";
+};
 jokeBtn.addEventListener("click", () => {
-    fetch(API_URL, {
+    fetch(dadJokesApiUrl, {
         headers: {
             Accept: "application/json",
         },
@@ -14,9 +19,8 @@ jokeBtn.addEventListener("click", () => {
         .then((json) => {
         jokePara.textContent = json.joke;
         changeBtnText(jokeBtn, "Següent acudit");
+        makeElementVisible(jokeVoting);
     });
-    if (!jokeVoting.style.display)
-        jokeVoting.style.display = "block";
 });
 const reportJokes = [];
 const voteJoke = (score) => {
@@ -43,4 +47,20 @@ jokeVoting.addEventListener("click", (e) => {
         const score = Number(btn.getAttribute("data-score"));
         voteJoke(score);
     }
+});
+/* ---------------------------- WEATHER --------------------------- */
+const weatherApi = {
+    url: "http://api.openweathermap.org/data/2.5/weather",
+    city: "barcelona",
+    lang: "ca",
+    units: "metric",
+    appid: "cb3f4d75936f8a5b15dd34bd2b306614"
+};
+fetch(`${weatherApi.url}?q=${weatherApi.city}&lang=${weatherApi.lang}&units=${weatherApi.units}&appid=${weatherApi.appid}`)
+    .then((response) => response.json())
+    .then((json) => {
+    const weatherTempDiv = document.querySelector(".weather-temp");
+    const weatherIconImg = document.querySelector(".weather-icon-img");
+    weatherIconImg.src = `http://openweathermap.org/img/wn/${json.weather[0].icon}.png`;
+    weatherTempDiv.textContent = `${parseInt(json.main.temp)} ºC`;
 });

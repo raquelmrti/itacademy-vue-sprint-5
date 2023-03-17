@@ -33,3 +33,13 @@ Print the joke on screen instead of showing it through the console, and make a b
 Implement a voting system that lets the user rate the jokes displayed with a score from 1 to 3. Each time a vote is taken, an object containing the joke being rated, the given score and the date gets pushed to an array.
 
 ##### ✅ Finished: 15/03/2023
+
+---
+
+### ⭐⭐ **Level 2** ⭐⭐
+
+**— Exercise 4**
+
+Consume a weather API to display weather information on screen. I used [OpenWeather's API](https://openweathermap.org), which required a key to use.
+
+##### ✅ Finished: 16/03/2023
