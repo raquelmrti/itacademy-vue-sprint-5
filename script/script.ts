@@ -1,6 +1,8 @@
-/* --------------------------- DAD JOKES -------------------------- */
+/* --------------------------- JOKES -------------------------- */
 
 const dadJokesApiUrl = "https://icanhazdadjoke.com/";
+const chuckNorrisJokesUrl = "https://api.chucknorris.io/jokes/random";
+
 const jokePara = document.querySelector(".joke-para") as HTMLElement;
 const jokeBtn = document.querySelector(".joke-btn") as HTMLInputElement;
 const jokeVoting = document.querySelector(".joke-voting") as HTMLElement;
@@ -12,18 +14,96 @@ const makeElementVisible = (elem: HTMLElement) => {
   if (!elem.style.display) elem.style.display = "block";
 }
 
-jokeBtn.addEventListener("click", () => {
-  fetch(dadJokesApiUrl, {
+// Without async/await
+/* jokeBtn.addEventListener("click", () => {
+  const randomNum = Math.floor(Math.random() * 2);
+
+  if (randomNum === 0) {
+    fetch(dadJokesApiUrl, {
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        jokePara.textContent = json.joke;
+        changeBtnText(jokeBtn, "Següent acudit");
+        makeElementVisible(jokeVoting);
+      })
+  } else {
+    fetch(chuckNorrisJokesUrl)
+      .then((response) => response.json())
+      .then((json) => {
+        jokePara.textContent = json.value;
+        changeBtnText(jokeBtn, "Següent acudit");
+        makeElementVisible(jokeVoting);
+      })
+  }
+}); */
+
+// With async/await (and separate functions)
+const getJoke = async (url: string) => {
+  const response = await fetch(url, {
     headers: {
       Accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((json) => {
-      jokePara.textContent = json.joke;
-      changeBtnText(jokeBtn, "Següent acudit");
-      makeElementVisible(jokeVoting);
-    })
+  });
+
+  if (!response.ok) {
+    throw new Error("Couldn't fetch joke.");
+  }
+
+  return await response.json();
+}
+
+interface DadJoke {
+  id: string;
+  joke: string;
+  status: number;
+}
+
+interface ChuckNorrisJoke {
+  categories: [];
+  created_at: string;
+  icon_url: string;
+  id: string;
+  updated_at: string;
+  url: string;
+  value: string;
+}
+
+type Joke = DadJoke | ChuckNorrisJoke;
+
+const displayJoke = (json: Joke) => {
+  // We have to check if the JSON received is from the Dad Jokes API or the Chuck Norris API.
+  // The Dad Jokes JSON assigns the joke string to the property "joke", while the Chuck Norris API
+  // assigns the joke string to the property "value".
+  let joke;
+  if ("joke" in json) {
+    joke = json.joke;
+  } else {
+    joke = json.value;
+  }
+
+  jokePara.textContent = joke;
+  changeBtnText(jokeBtn, "Següent acudit");
+  makeElementVisible(jokeVoting);
+};
+
+jokeBtn.addEventListener("click", async () => {
+  const randomNum = Math.floor(Math.random() * 2);
+
+  try {
+    if (randomNum === 0) {
+      const joke = await getJoke(dadJokesApiUrl);
+      displayJoke(joke);
+    } else {
+      const joke = await getJoke(chuckNorrisJokesUrl);
+      displayJoke(joke);
+    }
+  } catch (error) {
+    console.error("Something went wrong.", error);
+  }
 });
 
 interface Report {
@@ -83,4 +163,3 @@ fetch(`${weatherApi.url}?q=${weatherApi.city}&lang=${weatherApi.lang}&units=${we
     weatherIconImg.src = `http://openweathermap.org/img/wn/${json.weather[0].icon}.png`;
     weatherTempDiv.textContent = `${parseInt(json.main.temp)} ºC`;
   })
-
