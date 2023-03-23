@@ -43,3 +43,19 @@ Implement a voting system that lets the user rate the jokes displayed with a sco
 Consume a weather API to display weather information on screen. I used [OpenWeather's API](https://openweathermap.org), which required a key to use.
 
 ##### ✅ Finished: 16/03/2023
+
+**— Exercise 5**
+
+In addition to the dad jokes, also consume an API about Chuck Norris jokes and make it so that the jokes randomly switch between the dad ones and Chuck Norris ones.
+
+##### ✅ Finished: 20/03/2023
+
+---
+
+### ⭐⭐⭐ **Level 3** ⭐⭐⭐
+
+**— Exercise 6**
+
+Finish the styling of the website and add functionality that makes the background change every time a new joke is displayed.
+
+##### ✅ Finished: 23/03/2023

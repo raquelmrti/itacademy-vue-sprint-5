@@ -11,13 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 const dadJokesApiUrl = "https://icanhazdadjoke.com/";
 const chuckNorrisJokesUrl = "https://api.chucknorris.io/jokes/random";
-const jokePara = document.querySelector(".joke-para");
-const jokeBtn = document.querySelector(".joke-btn");
-const jokeVoting = document.querySelector(".joke-voting");
 const changeBtnText = (btn, newText) => (btn.textContent = newText);
-const makeElementVisible = (elem) => {
+const makeElementFlex = (elem) => {
     if (!elem.style.display)
-        elem.style.display = "block";
+        elem.style.display = "flex";
 };
 // Without async/await
 /* jokeBtn.addEventListener("click", () => {
@@ -33,7 +30,7 @@ const makeElementVisible = (elem) => {
       .then((json) => {
         jokePara.textContent = json.joke;
         changeBtnText(jokeBtn, "Següent acudit");
-        makeElementVisible(jokeVoting);
+        makeElementFlex(jokeVoting);
       })
   } else {
     fetch(chuckNorrisJokesUrl)
@@ -41,7 +38,7 @@ const makeElementVisible = (elem) => {
       .then((json) => {
         jokePara.textContent = json.value;
         changeBtnText(jokeBtn, "Següent acudit");
-        makeElementVisible(jokeVoting);
+        makeElementFlex(jokeVoting);
       })
   }
 }); */
@@ -57,6 +54,9 @@ const getJoke = (url) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return yield response.json();
 });
+const jokePara = document.querySelector(".joke-para");
+const jokeBtn = document.querySelector(".joke-btn");
+const jokeVoting = document.querySelector(".joke-voting");
 const displayJoke = (json) => {
     // We have to check if the JSON received is from the Dad Jokes API or the Chuck Norris API.
     // The Dad Jokes JSON assigns the joke string to the property "joke", while the Chuck Norris API
@@ -70,7 +70,19 @@ const displayJoke = (json) => {
     }
     jokePara.textContent = joke;
     changeBtnText(jokeBtn, "Següent acudit");
-    makeElementVisible(jokeVoting);
+    makeElementFlex(jokeVoting);
+};
+const changeBg = () => {
+    const bgColors = ["pink", "purple", "yellow", "blue", "green"];
+    const bgContainer = document.querySelector(".container");
+    const bgClass = bgContainer.classList[1];
+    let randomNum = Math.floor(Math.random() * bgColors.length);
+    // Get a new bg color every time the function is called
+    while (bgClass === `blobs-${bgColors[randomNum]}-bg`) {
+        randomNum = Math.floor(Math.random() * bgColors.length);
+    }
+    bgContainer.classList.remove(bgClass);
+    bgContainer.classList.add(`blobs-${bgColors[randomNum]}-bg`);
 };
 jokeBtn.addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
     const randomNum = Math.floor(Math.random() * 2);
@@ -78,10 +90,12 @@ jokeBtn.addEventListener("click", () => __awaiter(void 0, void 0, void 0, functi
         if (randomNum === 0) {
             const joke = yield getJoke(dadJokesApiUrl);
             displayJoke(joke);
+            changeBg();
         }
         else {
             const joke = yield getJoke(chuckNorrisJokesUrl);
             displayJoke(joke);
+            changeBg();
         }
     }
     catch (error) {
@@ -95,7 +109,7 @@ const voteJoke = (score) => {
         score: score,
         date: new Date().toISOString(),
     };
-    // update the joke report if the user rates the same joke again
+    // Update the joke report if the user rates the same joke again
     // before getting a new one
     if (reportJokes.length) {
         if (jokePara.textContent === reportJokes[reportJokes.length - 1].joke) {
@@ -109,8 +123,9 @@ jokeVoting.addEventListener("click", (e) => {
     if (!e.target)
         return;
     const btn = e.target;
-    if (btn.classList.contains("joke-voting-btn")) {
-        const score = Number(btn.getAttribute("data-score"));
+    if (btn.parentElement &&
+        btn.parentElement.classList.contains("joke-voting-btn")) {
+        const score = Number(btn.parentElement.getAttribute("data-score"));
         voteJoke(score);
     }
 });
@@ -120,13 +135,28 @@ const weatherApi = {
     city: "barcelona",
     lang: "ca",
     units: "metric",
-    appid: "cb3f4d75936f8a5b15dd34bd2b306614"
+    appid: "cb3f4d75936f8a5b15dd34bd2b306614",
 };
-fetch(`${weatherApi.url}?q=${weatherApi.city}&lang=${weatherApi.lang}&units=${weatherApi.units}&appid=${weatherApi.appid}`)
-    .then((response) => response.json())
-    .then((json) => {
+const getWeather = (url) => __awaiter(void 0, void 0, void 0, function* () {
+    const response = yield fetch(url);
+    if (!response.ok) {
+        throw new Error("Couldn't fetch the weather.");
+    }
+    return yield response.json();
+});
+const displayWeather = (json) => {
+    const weather = json;
     const weatherTempDiv = document.querySelector(".weather-temp");
     const weatherIconImg = document.querySelector(".weather-icon-img");
-    weatherIconImg.src = `http://openweathermap.org/img/wn/${json.weather[0].icon}.png`;
-    weatherTempDiv.textContent = `${parseInt(json.main.temp)} ºC`;
-});
+    weatherIconImg.src = `../img/weather-icons/${weather.weather[0].icon}.svg`;
+    weatherTempDiv.textContent = `${parseInt(weather.main.temp)} ºC`;
+};
+window.addEventListener("load", () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const weather = yield getWeather(`${weatherApi.url}?q=${weatherApi.city}&lang=${weatherApi.lang}&units=${weatherApi.units}&appid=${weatherApi.appid}`);
+        displayWeather(weather);
+    }
+    catch (error) {
+        console.error("Something went wrong", error);
+    }
+}));

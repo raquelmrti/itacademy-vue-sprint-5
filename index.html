@@ -2,11 +2,12 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IT Academy // Vue // Sprint 5</title>
-  <link rel="stylesheet" href="css/style.min.css">
+  <link rel="stylesheet" href="css/style.min.css" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700&display=swap" rel="stylesheet" />
   <script src="script/script.js" defer></script>
 </head>
 
@@ -14,19 +15,25 @@
   <div class="main-wrapper">
     <div class="weather-container">
       <div class="weather-icon">
-        <img class="weather-icon-img" src="" alt="">
+        <img class="weather-icon-img" src="" alt="" />
       </div>
       <div class="weather-temp"></div>
     </div>
-    <div class="container">
-      <h1>Preparat per riure? 🤣</h1>
+    <div class="container blobs-purple-bg">
+      <h1>Preparat per riure?</h1>
       <div class="joke-div">
         <p class="joke-para"></p>
       </div>
       <div class="joke-voting">
-        <button class="joke-voting-btn" data-score=1>😓</button>
-        <button class="joke-voting-btn" data-score=2>😐</button>
-        <button class="joke-voting-btn" data-score=3>😆</button>
+        <button class="joke-voting-btn" data-score="1">
+          <img src="img/joke-voting-icons/1.png" alt="Score 1" />
+        </button>
+        <button class="joke-voting-btn" data-score="2">
+          <img src="img/joke-voting-icons/2.png" alt="Score 2" />
+        </button>
+        <button class="joke-voting-btn" data-score="3">
+          <img src="img/joke-voting-icons/3.png" alt="Score 3" />
+        </button>
       </div>
       <button class="joke-btn">Dona'm un acudit</button>
     </div>
